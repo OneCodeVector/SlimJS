@@ -126,22 +126,7 @@ class Snake {
 
                 if (!GridValue) { continue; }
 
-                switch (GridValue) {
-                    case (1) : {
-                        this.Context.fillStyle = HeadColor;
-                        break;
-                    }
-
-                    case (2) : {
-                        this.Context.fillStyle = BodyColor;
-                        break;
-                    }
-
-                    case (3) : {
-                        this.Context.fillStyle = FoodColor;
-                        break;
-                    }
-                }
+                this.Context.fillStyle = this.CellTypes[GridValue];
                 this.Context.fillRect(X, Y, this.CellSize, this.CellSize);
             }
         }

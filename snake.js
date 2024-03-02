@@ -74,6 +74,12 @@ class Snake {
         "Food": 3,
     }
 
+    static CellColors = {
+        1: "blue",
+        2: "green",
+        3: "red",
+    }
+
     static OnFrameCallback = function() {}
 
     static set OnFrame(Function) {
@@ -119,14 +125,14 @@ class Snake {
         this.Context.fillRect(0, 0, this.Width, this.Height);
     }
 
-    static DrawGrid(HeadColor = "blue", BodyColor = "green", FoodColor = "red") {
+    static DrawGrid() {
         for (let Y = this.DeadSpace.Y / 2; Y < this.Height - this.DeadSpace.Y; Y += this.CellSize) {
             for (let X = this.DeadSpace.X / 2; X < this.Width - this.DeadSpace.X; X += this.CellSize) {
                 let GridValue = this.Grid[Math.floor(Y / this.CellSize)][Math.floor(X / this.CellSize)];
 
                 if (!GridValue) { continue; }
 
-                this.Context.fillStyle = this.CellTypes[GridValue];
+                this.Context.fillStyle = this.CellColors[GridValue];
                 this.Context.fillRect(X, Y, this.CellSize, this.CellSize);
             }
         }

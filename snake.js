@@ -9,7 +9,7 @@ https://stackoverflow.com/questions/42593670/add-custom-language-to-a-github-rep
 */
 
 class FastMath {
-    
+
 }
 
 function typeofAccurate(Value) {
@@ -39,14 +39,16 @@ class Random {
 
     static DoubleRand(Min, Max) {
         let Number = ((Math.sin(this.Rand(1, Math.sin(this.LastSeed))) * this.LastSeed + this.Rand(1, 3)) % (Max - Min)) + Min
-        
+
         return Number;
     }
 }
 
 class Vec2 {
-    static Zero = new this(0, 0);
-    
+    static get Zero() {
+        return new this(0, 0);
+    }
+
     constructor(X, Y) {
         this.X = X;
         this.Y = Y;
@@ -60,10 +62,12 @@ class Snake {
 
     static DeadSpace = Vec2.Zero;
     static Grid = [[]];
-    
+
     static Canvas;
     static Context;
     static FramesPerSecond = 10;
+
+    static GridResolution = Vec2.Zero;
 
     static SnakeArray = [];
 
@@ -75,16 +79,41 @@ class Snake {
     }
 
     static CellColors = {
+        0: "purple",
         1: "blue",
         2: "green",
         3: "red",
     }
 
+    static Growing = false;
+
+    static Body = class {
+        static CellArray = [];
+        
+        static forEach(Callback) {
+            this.CellArray.forEach(function () {
+                
+            })
+        }
+    }
+
+    static Head = class {
+        static Position = Vec2.Zero;
+    }
+
+    static OnEatCallback = function() { }
+
+    static set OnEat(Callback) {
+        this.OnEatCallback = function() {
+            setTimeout(Callback, 0);
+        }
+    }
+
     static OnFrameCallback = function() {}
 
-    static set OnFrame(Function) {
+    static set OnFrame(Callback) {
         this.OnFrameCallback = function() {
-            setTimeout(Function, 0);
+            setTimeout(Callback, 0);
             requestAnimationFrame(Snake.OnFrameCallback);
         }
     }
@@ -92,7 +121,7 @@ class Snake {
     static Start() {
         requestAnimationFrame(this.OnFrameCallback);
     }
-    
+
     static CreateBoard(Width, Height, CellSize) {
         this.Width = Width;
         this.Height = Height;
@@ -106,7 +135,10 @@ class Snake {
 
         this.DeadSpace.X = (this.Width % this.CellSize)
         this.DeadSpace.Y = (this.Height % this.CellSize)
-        
+
+        this.GridResolution.X = Math.floor(this.Width / this.CellSize)
+        this.GridResolution.Y = Math.floor(this.Height / this.CellSize)
+
         this.Canvas.style.width = this.Width;
         this.Canvas.style.height = this.Height;
 
@@ -130,7 +162,7 @@ class Snake {
             for (let X = this.DeadSpace.X / 2; X < this.Width - this.DeadSpace.X; X += this.CellSize) {
                 let GridValue = this.Grid[Math.floor(Y / this.CellSize)][Math.floor(X / this.CellSize)];
 
-                if (!GridValue) { continue; }
+                if (!GridValue) continue;
 
                 this.Context.fillStyle = this.CellColors[GridValue];
                 this.Context.fillRect(X, Y, this.CellSize, this.CellSize);
@@ -138,9 +170,9 @@ class Snake {
         }
     }
 
-    ClearGrid() {
-        for (let Y = 0; Y < this.Height / this.CellSize; Y++) {
-            for (let X = 0; X < this.Width / this.CellSize; X++) {
+    static ClearGrid() {
+        for (let Y = 0; Y < this.GridResolution.Y; Y++) {
+            for (let X = 0; X < this.GridResolution.X; X++) {
                 this.Grid[Y][X] = 0;
             }
         }
@@ -162,7 +194,7 @@ class Snake {
 
     static DrawGridOutline(Color = "grey") {
         this.Context.strokeStyle = Color;
-        
+
         for (let Y = this.DeadSpace.Y / 2; Y < this.Height - this.DeadSpace.Y; Y += this.CellSize) {
             for (let X = this.DeadSpace.X / 2; X < this.Width - this.DeadSpace.X; X += this.CellSize) {
                 this.Context.strokeRect(X, Y, this.CellSize, this.CellSize);
@@ -177,5 +209,30 @@ class Snake {
         }
 
         this.Grid[X.Y][X.X] = this.CellTypes[Y];
+    }
+
+    // Functions for the snake itself //
+    static Grow() {
+        this.Growing = true;
+    }
+
+    static Die() {
+
+    }
+
+    static MoveUp() {
+
+    }
+
+    static MoveDown() {
+
+    }
+
+    static MoveLeft() {
+
+    }
+
+    static MoveRight() {
+
     }
 }
